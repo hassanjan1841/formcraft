@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { FieldPalette } from '@/components/builder/FieldPalette'
 import { Canvas } from '@/components/builder/Canvas'
 import { PropertiesPanel } from '@/components/builder/PropertiesPanel'
+import { ResponsesTable } from '@/components/dashboard/ResponsesTable'
 import { FormField, FieldType, Form as FormType } from '@/types/form'
 import { createField } from '@/lib/form-schema'
 
@@ -18,6 +19,7 @@ export default function EditFormPage() {
   const [saving, setSaving] = useState(false)
   const [loading, setLoading] = useState(true)
   const [submissionsCount, setSubmissionsCount] = useState(0)
+  const [activeTab, setActiveTab] = useState<'builder' | 'responses'>('builder')
 
   useEffect(() => {
     async function loadForm() {
@@ -104,25 +106,50 @@ export default function EditFormPage() {
         </div>
       </header>
 
-      <main className="p-6 flex gap-6">
-        <FieldPalette onAdd={handleAddField} />
-        <Canvas
-          fields={fields}
-          onSelect={setSelectedId}
-          selectedId={selectedId}
-        />
-        <div>
-          <PropertiesPanel field={selectedField} onUpdate={handleUpdateField} />
-          {selectedId && (
-            <button
-              onClick={() => handleDeleteField(selectedId)}
-              className="mt-4 w-64 bg-red-50 text-red-600 p-2 rounded border border-red-200 hover:bg-red-100"
-            >
-              Delete Field
-            </button>
-          )}
+      <div className="border-b mb-6">
+        <div className="flex gap-4">
+          <button
+            onClick={() => setActiveTab('builder')}
+            className={`px-4 py-2 ${activeTab === 'builder' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}
+          >
+            Builder
+          </button>
+          <button
+            onClick={() => setActiveTab('responses')}
+            className={`px-4 py-2 ${activeTab === 'responses' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}
+          >
+            Responses ({submissionsCount})
+          </button>
         </div>
-      </main>
+      </div>
+
+      {activeTab === 'responses' && (
+        <div className="bg-white rounded-lg shadow p-6">
+          <ResponsesTable formId={params.id as string} fields={fields.map(f => ({ id: f.id, label: f.label }))} />
+        </div>
+      )}
+
+      {activeTab === 'builder' && (
+        <main className="p-6 flex gap-6">
+          <FieldPalette onAdd={handleAddField} />
+          <Canvas
+            fields={fields}
+            onSelect={setSelectedId}
+            selectedId={selectedId}
+          />
+          <div>
+            <PropertiesPanel field={selectedField} onUpdate={handleUpdateField} />
+            {selectedId && (
+              <button
+                onClick={() => handleDeleteField(selectedId)}
+                className="mt-4 w-64 bg-red-50 text-red-600 p-2 rounded border border-red-200 hover:bg-red-100"
+              >
+                Delete Field
+              </button>
+            )}
+          </div>
+        </main>
+      )}
     </div>
   )
 }
