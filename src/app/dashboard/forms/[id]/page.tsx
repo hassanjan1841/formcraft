@@ -72,7 +72,7 @@ export default function EditFormPage() {
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="bg-white shadow px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-gray-600 hover:text-gray-900">← Back to Dashboard</Link>
+        <Link href="/dashboard" className="text-gray-600 hover:text-gray-900">← Back to Dashboard</Link>
         <div className="flex items-center gap-4">
           <input
             type="text"
