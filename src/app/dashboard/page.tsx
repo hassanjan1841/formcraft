@@ -1,6 +1,7 @@
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
+import { FormCard } from '@/components/FormCard'
 
 export default async function DashboardPage() {
   const session = await auth()
@@ -18,7 +19,7 @@ export default async function DashboardPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-bold">Your Forms</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Your Forms</h2>
         <Link
           href="/dashboard/forms/new"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
@@ -28,25 +29,19 @@ export default async function DashboardPage() {
       </div>
 
       {forms.length === 0 ? (
-        <div className="text-center py-12 text-gray-500">
+        <div className="text-center py-12 text-gray-600">
           <p>No forms yet. Create your first form!</p>
         </div>
       ) : (
         <div className="grid md:grid-cols-3 gap-4">
           {forms.map(form => (
-            <Link
+            <FormCard
               key={form.id}
-              href={`/dashboard/forms/${form.id}`}
-              className="bg-white p-4 rounded-lg shadow hover:shadow-md transition"
-            >
-              <h3 className="font-semibold">{form.title}</h3>
-              <p className="text-sm text-gray-500">
-                {form._count.submissions} submissions
-              </p>
-              <p className="text-xs text-gray-400 mt-2">
-                {new Date(form.updatedAt).toLocaleDateString()}
-              </p>
-            </Link>
+              id={form.id}
+              title={form.title}
+              submissions={form._count.submissions}
+              updatedAt={form.updatedAt.toISOString()}
+            />
           ))}
         </div>
       )}
