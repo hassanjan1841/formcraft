@@ -40,7 +40,7 @@ export default function NewFormPage() {
       body: JSON.stringify({ title, schema: { fields }, published: publish })
     })
     const form = await res.json()
-    router.push(`/forms/${form.id}`)
+    router.push(`/dashboard/forms/${form.id}`)
     setSaving(false)
   }
 
