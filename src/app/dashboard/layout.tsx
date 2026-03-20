@@ -14,7 +14,7 @@ export default async function DashboardLayout({
     <div className="min-h-screen bg-gray-100">
       <nav className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/dashboard" className="text-xl font-bold text-blue-600">FormCraft</Link>
+          <Link href="/" className="text-xl font-bold text-blue-600">FormCraft</Link>
           <div className="flex gap-4 items-center">
             <Link href="/dashboard" className="text-gray-700">Dashboard</Link>
             <LogoutButton />
