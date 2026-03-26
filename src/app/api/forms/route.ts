@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { Prisma } from '@prisma/client'
 
 export async function GET() {
   const session = await auth()
@@ -19,7 +20,7 @@ export async function POST(req: Request) {
   
   const body = await req.json()
   const { action, formId, title, schema } = body
-  const userId = session!.user!.id as string
+  const userId = session.user.id as string
 
   if (action === 'duplicate' && formId) {
     const original = await prisma.form.findUnique({ where: { id: formId } })
@@ -30,7 +31,7 @@ export async function POST(req: Request) {
       data: {
         userId,
         title: `${original.title} - Copy`,
-        schema: original.schema as unknown as never
+        schema: original.schema as unknown as Prisma.JsonObject
       }
     })
     return NextResponse.json(copy)
