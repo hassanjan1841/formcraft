@@ -24,6 +24,13 @@ export default function NewFormPage() {
     setSelectedId(newField.id)
   }
 
+  function handleAddFields(newFields: FormField[]) {
+    setFields([...fields, ...newFields])
+    if (newFields.length > 0) {
+      setSelectedId(newFields[newFields.length - 1].id)
+    }
+  }
+
   function handleUpdateField(updated: FormField) {
     setFields(fields.map(f => (f.id === updated.id ? updated : f)))
   }
@@ -94,7 +101,7 @@ export default function NewFormPage() {
       </header>
 
       <main className="p-6 flex gap-6">
-        <FieldPalette onAdd={handleAddField} />
+        <FieldPalette onAdd={handleAddField} onAddFields={handleAddFields} />
         <Canvas
           fields={fields}
           onSelect={setSelectedId}

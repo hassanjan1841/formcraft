@@ -1,5 +1,7 @@
 'use client'
-import { FieldType } from '@/types/form'
+import { useState } from 'react'
+import { FieldType, FormField } from '@/types/form'
+import { formTemplates } from '@/lib/templates'
 
 const fieldTypes: { type: FieldType; icon: string; label: string; desc: string }[] = [
   { type: 'text', icon: 'M4 6h16M4 12h16M4 18h7', label: 'Text', desc: 'Short text input' },
@@ -15,9 +17,19 @@ const fieldTypes: { type: FieldType; icon: string; label: string; desc: string }
 
 interface Props {
   onAdd: (type: FieldType) => void
+  onAddFields?: (fields: FormField[]) => void
 }
 
-export function FieldPalette({ onAdd }: Props) {
+export function FieldPalette({ onAdd, onAddFields }: Props) {
+  const [showTemplates, setShowTemplates] = useState(false)
+
+  function handleTemplateSelect(templateIndex: number) {
+    if (onAddFields) {
+      onAddFields(formTemplates[templateIndex].fields)
+    }
+    setShowTemplates(false)
+  }
+
   return (
     <div className="w-56 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
       <div className="p-4 border-b border-slate-100 bg-gradient-to-r from-blue-50 to-purple-50">
@@ -25,6 +37,34 @@ export function FieldPalette({ onAdd }: Props) {
         <p className="text-xs text-slate-500 mt-0.5">Select a field type to add</p>
       </div>
       <div className="p-3 space-y-2">
+        <button
+          onClick={() => setShowTemplates(!showTemplates)}
+          className="w-full flex items-center gap-3 p-3 bg-gradient-to-r from-violet-50 to-indigo-50 border border-violet-200 rounded-xl hover:border-violet-400 hover:shadow-md transition-all text-left group"
+        >
+          <div className="w-10 h-10 bg-gradient-to-br from-violet-100 to-indigo-100 rounded-lg flex items-center justify-center group-hover:from-violet-200 group-hover:to-indigo-200 transition-all">
+            <svg className="w-5 h-5 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+            </svg>
+          </div>
+          <div>
+            <span className="block font-medium text-slate-900 text-sm">Templates</span>
+            <span className="text-xs text-slate-500">Start from pre-built</span>
+          </div>
+        </button>
+
+        {showTemplates && (
+          <div className="space-y-1.5 bg-slate-50 p-2 rounded-lg">
+            {formTemplates.map((template, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleTemplateSelect(idx)}
+                className="w-full text-left px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg hover:border-violet-300 hover:bg-violet-50 transition-all"
+              >
+                {template.name}
+              </button>
+            ))}
+          </div>
+        )}
         {fieldTypes.map(({ type, icon, label, desc }) => (
           <button
             key={type}
