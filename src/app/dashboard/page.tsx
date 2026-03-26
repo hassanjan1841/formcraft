@@ -2,6 +2,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { FormCard } from '@/components/FormCard'
+import { StatsCards } from '@/components/dashboard/StatsCards'
 import { PageLoader } from '@/components/ui/LoadingSpinner'
 
 export default async function DashboardPage() {
@@ -17,6 +18,9 @@ export default async function DashboardPage() {
     orderBy: { updatedAt: 'desc' }
   })
 
+  const totalSubmissions = forms.reduce((sum, form) => sum + form._count.submissions, 0)
+  const publishedForms = forms.filter(form => form.published).length
+
   return (
     <div className="max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-8">
@@ -31,6 +35,12 @@ export default async function DashboardPage() {
           + Create Form
         </Link>
       </div>
+
+      <StatsCards
+        totalForms={forms.length}
+        totalSubmissions={totalSubmissions}
+        publishedForms={publishedForms}
+      />
 
       {forms.length === 0 ? (
         <div className="text-center py-20">
