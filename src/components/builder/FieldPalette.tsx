@@ -18,14 +18,18 @@ const fieldTypes: { type: FieldType; icon: string; label: string; desc: string }
 interface Props {
   onAdd: (type: FieldType) => void
   onAddFields?: (fields: FormField[]) => void
+  onReplaceFields?: (fields: FormField[]) => void
 }
 
-export function FieldPalette({ onAdd, onAddFields }: Props) {
+export function FieldPalette({ onAdd, onAddFields, onReplaceFields }: Props) {
   const [showTemplates, setShowTemplates] = useState(false)
 
   function handleTemplateSelect(templateIndex: number) {
-    if (onAddFields) {
-      onAddFields(formTemplates[templateIndex].fields)
+    const templateFields = formTemplates[templateIndex].fields
+    if (onReplaceFields) {
+      onReplaceFields(templateFields)
+    } else if (onAddFields) {
+      onAddFields(templateFields)
     }
     setShowTemplates(false)
   }

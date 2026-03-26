@@ -5,7 +5,7 @@ export interface FormTemplate {
   fields: FormField[]
 }
 
-const createId = () => Math.random().toString(36).substring(2, 11)
+const createId = () => crypto.randomUUID()
 
 export const formTemplates: FormTemplate[] = [
   {
