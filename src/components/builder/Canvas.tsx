@@ -31,7 +31,10 @@ const fieldIcons: Record<string, string> = {
   textarea: 'M4 6h16M4 10h16M4 14h16M4 18h16',
   select: 'M4 6h16M4 12h16M4 18h7',
   radio: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
-  checkbox: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+  checkbox: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+  date: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
+  number: 'M7 20l4-16m2 16l4-16M6 9h14M4 15h14',
+  file: 'M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12'
 }
 
 interface SortableItemProps {
@@ -120,6 +123,20 @@ function SortableField({ field, isSelected, onSelect }: SortableItemProps) {
           <label className="flex items-center gap-2 text-slate-600">
             <input type="checkbox" disabled className="text-blue-600 rounded" /> {field.label}
           </label>
+        </div>
+      )}
+      {field.type === 'date' && (
+        <input type="date" placeholder={field.placeholder} className="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 cursor-not-allowed" disabled />
+      )}
+      {field.type === 'number' && (
+        <input type="number" placeholder={field.placeholder} className="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 cursor-not-allowed" disabled />
+      )}
+      {field.type === 'file' && (
+        <div className="w-full p-6 border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 text-center">
+          <svg className="w-8 h-8 text-slate-400 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+          <span className="text-sm text-slate-500">{field.placeholder || 'Upload file'}</span>
         </div>
       )}
     </div>

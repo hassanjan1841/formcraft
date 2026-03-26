@@ -134,6 +134,42 @@ export function FormRenderer({ fields, formId }: Props) {
               <span className="text-slate-700">{field.label}</span>
             </label>
           )}
+
+          {field.type === 'date' && (
+            <input
+              type="date"
+              value={values[field.id] as string || ''}
+              onChange={e => setValues({ ...values, [field.id]: e.target.value })}
+              required={field.required}
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            />
+          )}
+
+          {field.type === 'number' && (
+            <input
+              type="number"
+              placeholder={field.placeholder}
+              value={values[field.id] as string || ''}
+              onChange={e => setValues({ ...values, [field.id]: e.target.value })}
+              required={field.required}
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            />
+          )}
+
+          {field.type === 'file' && (
+            <div className="w-full p-6 border-2 border-dashed border-slate-200 rounded-xl text-center hover:border-slate-300 hover:bg-slate-50 transition-all">
+              <svg className="w-8 h-8 text-slate-400 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              <span className="text-sm text-slate-500">{field.placeholder || 'Upload file'}</span>
+              <input
+                type="file"
+                onChange={e => setValues({ ...values, [field.id]: e.target.files?.[0]?.name || '' })}
+                required={field.required}
+                className="mt-3 w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
+              />
+            </div>
+          )}
         </div>
       ))}
       

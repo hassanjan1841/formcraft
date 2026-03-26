@@ -1,4 +1,4 @@
-export type FieldType = 'text' | 'email' | 'textarea' | 'select' | 'radio' | 'checkbox'
+export type FieldType = 'text' | 'email' | 'textarea' | 'select' | 'radio' | 'checkbox' | 'date' | 'number' | 'file'
 
 export interface FormField {
   id: string

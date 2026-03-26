@@ -6,7 +6,7 @@ export function createField(type: FieldType): FormField {
     type,
     label: getDefaultLabel(type),
     required: false,
-    placeholder: type === 'text' || type === 'email' || type === 'textarea' ? 'Enter...' : undefined,
+    placeholder: type === 'text' || type === 'email' || type === 'textarea' ? 'Enter...' : type === 'number' ? 'Enter number' : type === 'file' ? 'Upload file' : undefined,
     options: type === 'select' || type === 'radio' ? ['Option 1', 'Option 2'] : undefined
   }
 }
@@ -18,7 +18,10 @@ function getDefaultLabel(type: FieldType): string {
     textarea: 'Message',
     select: 'Select Option',
     radio: 'Choose One',
-    checkbox: 'I agree'
+    checkbox: 'I agree',
+    date: 'Select Date',
+    number: 'Number Field',
+    file: 'Upload File'
   }
   return labels[type]
 }
