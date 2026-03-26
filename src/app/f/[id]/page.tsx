@@ -13,9 +13,9 @@ export default async function PublicFormPage({ params }: { params: Promise<{ id:
   const schema = form.schema as { fields: any[] }
   
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <div className="bg-white w-full max-w-lg rounded-xl shadow-lg p-8">
-        <h1 className="text-2xl font-bold mb-6">{form.title}</h1>
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-12">
+      <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl border border-slate-200 p-8">
+        <h1 className="text-2xl font-bold text-slate-900 mb-6">{form.title}</h1>
         <FormRenderer fields={schema.fields} formId={id} />
       </div>
     </div>

@@ -1,13 +1,13 @@
 'use client'
 import { FieldType } from '@/types/form'
 
-const fieldTypes: { type: FieldType; icon: string; label: string }[] = [
-  { type: 'text', icon: 'T', label: 'Text' },
-  { type: 'email', icon: '@', label: 'Email' },
-  { type: 'textarea', icon: '¶', label: 'Textarea' },
-  { type: 'select', icon: '▼', label: 'Select' },
-  { type: 'radio', icon: '○', label: 'Radio' },
-  { type: 'checkbox', icon: '☑', label: 'Checkbox' }
+const fieldTypes: { type: FieldType; icon: string; label: string; desc: string }[] = [
+  { type: 'text', icon: 'M4 6h16M4 12h16M4 18h7', label: 'Text', desc: 'Short text input' },
+  { type: 'email', icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z', label: 'Email', desc: 'Email address' },
+  { type: 'textarea', icon: 'M4 6h16M4 10h16M4 14h16M4 18h16', label: 'Textarea', desc: 'Long text input' },
+  { type: 'select', icon: 'M4 6h16M4 12h16M4 18h7', label: 'Select', desc: 'Dropdown choice' },
+  { type: 'radio', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', label: 'Radio', desc: 'Single choice' },
+  { type: 'checkbox', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', label: 'Checkbox', desc: 'Multiple choice' }
 ]
 
 interface Props {
@@ -16,19 +16,27 @@ interface Props {
 
 export function FieldPalette({ onAdd }: Props) {
   return (
-    <div className="w-48 bg-gray-50 p-4 rounded-lg">
-      <h3 className="font-semibold mb-4">Add Field</h3>
-      <div className="space-y-2">
-        {fieldTypes.map(({ type, icon, label }) => (
+    <div className="w-56 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="p-4 border-b border-slate-100 bg-gradient-to-r from-blue-50 to-purple-50">
+        <h3 className="font-semibold text-slate-900">Add Field</h3>
+        <p className="text-xs text-slate-500 mt-0.5">Select a field type to add</p>
+      </div>
+      <div className="p-3 space-y-2">
+        {fieldTypes.map(({ type, icon, label, desc }) => (
           <button
             key={type}
             onClick={() => onAdd(type)}
-            className="w-full flex items-center gap-3 p-2 bg-white rounded border hover:border-blue-500 hover:bg-blue-50 transition"
+            className="w-full flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl hover:border-blue-400 hover:bg-blue-50/50 hover:shadow-md transition-all duration-200 text-left group"
           >
-            <span className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center font-bold">
-              {icon}
-            </span>
-            <span>{label}</span>
+            <div className="w-10 h-10 bg-gradient-to-br from-slate-100 to-slate-50 rounded-lg flex items-center justify-center group-hover:from-blue-100 group-hover:to-purple-100 transition-all">
+              <svg className="w-5 h-5 text-slate-600 group-hover:text-blue-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={icon} />
+              </svg>
+            </div>
+            <div>
+              <span className="block font-medium text-slate-900 text-sm">{label}</span>
+              <span className="text-xs text-slate-500">{desc}</span>
+            </div>
           </button>
         ))}
       </div>
