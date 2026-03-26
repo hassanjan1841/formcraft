@@ -173,6 +173,7 @@ export default function EditFormPage() {
             fields={fields}
             onSelect={setSelectedId}
             selectedId={selectedId}
+            onReorder={setFields}
           />
           <div className="space-y-4">
             <PropertiesPanel field={selectedField} onUpdate={handleUpdateField} />
