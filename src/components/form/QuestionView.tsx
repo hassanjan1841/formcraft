@@ -38,7 +38,10 @@ export function QuestionView({ fields, formId, onComplete }: Props) {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight' || e.key === 'Enter') {
+      const target = e.target as HTMLElement
+      const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT'
+
+      if (e.key === 'ArrowRight' || (e.key === 'Enter' && !isInput)) {
         e.preventDefault()
         goNext()
       } else if (e.key === 'ArrowLeft') {
@@ -53,20 +56,25 @@ export function QuestionView({ fields, formId, onComplete }: Props) {
 
   async function handleSubmit() {
     setLoading(true)
-    const res = await fetch(`/api/forms/${formId}/submit`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: values })
-    })
+    try {
+      const res = await fetch(`/api/forms/${formId}/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: values })
+      })
 
-    if (res.ok) {
-      setSubmitted(true)
-      toast.success('Response submitted!')
-      onComplete?.()
-    } else {
+      if (res.ok) {
+        setSubmitted(true)
+        toast.success('Response submitted!')
+        onComplete?.()
+      } else {
+        toast.error('Failed to submit response')
+      }
+    } catch {
       toast.error('Failed to submit response')
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   if (submitted) {
@@ -182,17 +190,17 @@ export function QuestionView({ fields, formId, onComplete }: Props) {
             </div>
           )}
 
-          {currentField.type === 'checkbox' && (
-            <label className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 cursor-pointer transition-all">
+          {currentField.type === 'checkbox' && currentField.options?.map(opt => (
+            <label key={opt} className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 cursor-pointer transition-all">
               <input
                 type="checkbox"
-                checked={values[currentField.id] as boolean || false}
-                onChange={e => handleValueChange(currentField.id, e.target.checked)}
+                checked={values[currentField.id] === opt}
+                onChange={e => handleValueChange(currentField.id, e.target.checked ? opt : false)}
                 className="w-5 h-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
               />
-              <span className="text-slate-700">{currentField.label}</span>
+              <span className="text-slate-700">{opt}</span>
             </label>
-          )}
+          ))}
 
           {currentField.type === 'date' && (
             <input
