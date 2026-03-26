@@ -25,7 +25,10 @@ export function FieldPalette({ onAdd, onAddFields, onReplaceFields }: Props) {
   const [showTemplates, setShowTemplates] = useState(false)
 
   function handleTemplateSelect(templateIndex: number) {
-    const templateFields = formTemplates[templateIndex].fields
+    const templateFields = formTemplates[templateIndex].fields.map(f => ({
+      ...f,
+      id: crypto.randomUUID()
+    }))
     if (onReplaceFields) {
       onReplaceFields(templateFields)
     } else if (onAddFields) {
